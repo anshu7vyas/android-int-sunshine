@@ -221,8 +221,32 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
             return true;
         }
 
-        // TODO (2) Launch the map when the map menu item is clicked
+        // DONE (2) Launch the map when the map menu item is clicked
+        if (id == R.id.action_display_map) {
+            showLocationOnMap();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showLocationOnMap() {
+        String address = "1600 Holloway Avenue, San Francisco, CA";
+
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("geo")
+                .path("0,0")
+                .query(address);
+
+        Uri addressUri = builder.build();
+
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW);
+        mapIntent.setData(addressUri);
+
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        } else {
+            Log.d(TAG, "No apps installed to complete the request");
+        }
     }
 }
